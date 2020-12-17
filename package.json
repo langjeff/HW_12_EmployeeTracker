@@ -1,0 +1,25 @@
+{
+  "name": "HW_12_EmployeeTracker",
+  "version": "1.0.0",
+  "description": "A command line application for tracking employees, managers, and departments.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/langjeff/HW_12_EmployeeTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/langjeff/HW_12_EmployeeTracker/issues"
+  },
+  "homepage": "https://github.com/langjeff/HW_12_EmployeeTracker#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "inquirer": "^7.3.3",
+    "mysql": "^2.18.1"
+  }
+}
