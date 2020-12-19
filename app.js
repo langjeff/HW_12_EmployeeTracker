@@ -39,8 +39,35 @@ connection.connect((err) => {
   }
 
   console.log(`connected as id ${connection.threadId}`);
+  afterConnection();
+  runMenu();
 });
 
+const runMenu = () => {
+    inquirer.prompt({
+name: "action",
+type: "rawlist",
+message: "What would you like to do?",
+choices: [
+    "Add a new:",
+    // * add code for other choices here, dept, roles, empl.
+    "View:",
+    // * add code for dept., roles, empl.
+    "Update Employee Role",
+    "Update Employee Manger",
+    "View Employees by Manager",
+    "Delete:",
+    // * add code for other choices here, dept, roles, empl.
+    "View Department Budget:"
+],
+    })
+    .then((answer) => {
+        switch(answer.action) {
+
+
+        }
+    })
+}
 
 // Start our server so that it can begin listening to client requests.
 // Log (server-side) when our server has started
