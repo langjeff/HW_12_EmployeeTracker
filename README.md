@@ -32,7 +32,7 @@ There is no deployment for this app as it uses the command line.  Please install
 ## Functionality
 
 The app uses the npm inquirer package(update link), express js, and mySQL to make a simple CRUD app in the command line.
-![](employee_tracker.gif}
+![](employee_tracker.gif)
 
 ## License
 
