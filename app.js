@@ -97,9 +97,101 @@ const addNew = () => {
       switch (answer.table) {
         case "Employee":
           //* function for questions to add employee information
+          inquirer
+            .prompt([
+              {
+                name: "employeeFirst",
+                type: "input",
+                message: "What is the employee's first name?",
+                validate: (answer) => {
+                  if (answer !== "") {
+                    return true;
+                  }
+                  return "Please enter at least one character.";
+                },
+              },
+              {
+                name: "employeeLast",
+                type: "input",
+                message: "What is the employee's last name?",
+                validate: (answer) => {
+                  if (answer !== "") {
+                    return true;
+                  }
+                  return "Please enter at least one character.";
+                },
+              },
+              {
+                name: "role",
+                type: "input",
+                message: "Please enter the role id",
+              },
+              {
+                name: "manager",
+                type: "input",
+                message: "Please enter manager id",
+              },
+            ])
+            .then((answer) => {
+              connection.query(
+                "INSERT INTO employee set first_name = ?, last_name = ?, role_id = ?, manager_id = ?",
+                [
+                  answer.employeeFirst,
+                  answer.employeeLast,
+                  answer.role,
+                  answer.manager,
+                ],
+                function (err, res) {
+                  if (err) throw err;
+                  console.log("Employee Added");
+                  runMenu();
+                }
+              );
+            });
           break;
-        case "Manager":
+        case "Roles":
           //* function for questions to add manager information
+          inquirer
+            .prompt([
+              {
+                name: "roleTitle",
+                type: "input",
+                message: "What is the title of the new role?",
+                validate: (answer) => {
+                  if (answer !== "") {
+                    return true;
+                  }
+                  return "Please enter at least one character.";
+                },
+              },
+              {
+                name: "roleSalary",
+                type: "input",
+                message: "What is the salary?",
+                validate: (answer) => {
+                  if (answer !== "") {
+                    return true;
+                  }
+                  return "Please enter at least one character.";
+                },
+              },
+              {
+                name: "department",
+                type: "input",
+                message: "Please enter the department id",
+              },
+            ])
+            .then((answer) => {
+              connection.query(
+                "INSERT INTO roles set title = ?, salary = ?, department_id = ?",
+                [answer.roleTitle, answer.roleSalary, answer.department],
+                function (err, res) {
+                  if (err) throw err;
+                  console.log("Role added.");
+                  runMenu();
+                }
+              );
+            });
           break;
         case "Department":
           //* function for questions to add department information
@@ -160,10 +252,10 @@ const view = () => {
         case "Roles":
           let rolesQuery =
             // * selects elements from tables to return
-            "SELECT roles.id, roles.title, roles.salary, department.name AS department, ";
+            "SELECT roles.id, roles.title, roles.salary, department.name ";
           rolesQuery +=
             // * left joins department to roles on department id
-            "FROM roles LEFT JOIN department on roles.department_id = department.id";
+            "FROM roles LEFT JOIN department on roles.department_id = department.id;";
           connection.query(rolesQuery, (err, res) => {
             if (err) throw err;
             // console.log(res);
@@ -174,7 +266,7 @@ const view = () => {
         case "Department":
           let departmentQuery =
             // * selects elements from tables to return
-            "SELECT department.name from department";
+            "SELECT department.id, department.name from department";
           connection.query(departmentQuery, (err, res) => {
             if (err) throw err;
             // console.log(res);
@@ -187,11 +279,57 @@ const view = () => {
 };
 
 const updateRole = () => {
-  // * return list of employees
+  inquirer
+    .prompt([
+      {
+        name: "employeeId",
+        type: "input",
+        message: "Please enter employee id",
+      },
+      {
+        name: "roleId",
+        type: "input",
+        message: "Please enter new roles id",
+      },
+    ])
+    .then((answer) => {
+      connection.query(
+        "UPDATE employee SET role_id = ? WHERE id = ?",
+        [answer.roleId, answer.employeeId],
+        function (error, res) {
+          if (err) throw err;
+          console.log("Role updated!");
+        }
+      );
+      runSearch();
+    });
 };
 
 const updateManager = () => {
-  //* return list of employees
+  inquirer
+    .prompt([
+      {
+        name: "employeeId",
+        type: "input",
+        message: "Please enter employee id",
+      },
+      {
+        name: "roleId",
+        type: "input",
+        message: "Please enter new manager id",
+      },
+    ])
+    .then((answer) => {
+      connection.query(
+        "UPDATE employee SET manager_id = ? WHERE id = ?",
+        [answer.managerId, answer.employeeId],
+        function (err, res) {
+          if (err) throw err;
+          console.log("Namager Updated!");
+        }
+      );
+      runSearch();
+    });
 };
 
 const viewByManager = () => {
@@ -199,6 +337,7 @@ const viewByManager = () => {
 };
 
 const deleteFromDB = () => {
+  // * complete this function.
   inquirer
     .prompt({
       name: "table",
