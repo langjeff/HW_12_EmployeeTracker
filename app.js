@@ -57,6 +57,7 @@ const runMenu = () => {
         "View Employees by Manager",
         "Delete:",
         "View Department Budget:",
+        "Exit",
       ],
     })
     .then((answer) => {
@@ -81,6 +82,9 @@ const runMenu = () => {
           break;
         case "View Department Budget:":
           budget();
+          break;
+        case "Exit":
+          connection.end();
           break;
       }
     });
@@ -133,20 +137,32 @@ const addNew = () => {
               },
             ])
             .then((answer) => {
-              connection.query(
-                "INSERT INTO employee set first_name = ?, last_name = ?, role_id = ?, manager_id = ?",
-                [
-                  answer.employeeFirst,
-                  answer.employeeLast,
-                  answer.role,
-                  answer.manager,
-                ],
-                function (err, res) {
-                  if (err) throw err;
-                  console.log("Employee Added");
-                  runMenu();
-                }
-              );
+              if (answer.manager !== "") {
+                connection.query(
+                  "INSERT INTO employee set first_name = ?, last_name = ?, role_id = ?, manager_id = ?",
+                  [
+                    answer.employeeFirst,
+                    answer.employeeLast,
+                    answer.role,
+                    answer.manager,
+                  ],
+                  function (err, res) {
+                    if (err) throw err;
+                    console.log("Employee Added");
+                    runMenu();
+                  }
+                );
+              } else {
+                connection.query(
+                  "INSERT INTO employee set first_name = ?, last_name = ?, role_id = ?",
+                  [answer.employeeFirst, answer.employeeLast, answer.role],
+                  function (err, res) {
+                    if (err) throw err;
+                    console.log("Employee Added");
+                    runMenu();
+                  }
+                );
+              }
             });
           break;
         case "Roles":
@@ -314,7 +330,7 @@ const updateManager = () => {
         message: "Please enter employee id",
       },
       {
-        name: "roleId",
+        name: "managerId",
         type: "input",
         message: "Please enter new manager id",
       },
@@ -325,7 +341,7 @@ const updateManager = () => {
         [answer.managerId, answer.employeeId],
         function (err, res) {
           if (err) throw err;
-          console.log("Namager Updated!");
+          console.log("Manager Updated!");
         }
       );
       runSearch();
