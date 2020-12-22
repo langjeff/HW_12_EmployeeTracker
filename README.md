@@ -27,7 +27,7 @@ Open the project in VS Code or another editor and then use the terminal to run t
 
 ## Deployment
 
-[Heroku Deployment](#)
+There is no deployment for this app as it uses the command line.  Please install using directions above.
 
 ## Functionality
 
